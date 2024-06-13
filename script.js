@@ -11,5 +11,8 @@ function getApi() {
     })
     .then(function (data) {
       console.log(data);
+
+      for (const repo of data) {
+      }
     });
 }
