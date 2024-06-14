@@ -1,5 +1,7 @@
 // to get the temperature, humidity and wind speed: use list.main.temp(imperial:fahrenheit), list.main.humidity and list.wind.speed
 
+//create function for saving searches - parse and push, then set data to local storage
+
 // store the form data into local storage and retrieve it
 
 document
@@ -42,12 +44,11 @@ function displaySearchHistory() {
 }
 
 function fetchCoordinates(city) {
-  const apiKey = "e6dfe8b0f0462fe603d660cc1de7b7e0";
-  const requestUrl =
-    "https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${apiKey}";
+  const apiKey = "105e89504a7a6bcb10d19714d7d12063";
+  const requestUrl = `https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${apiKey}`;
 
   fetch(requestUrl)
-    .then((response) => response.JSON())
+    .then((response) => response.json())
     .then((data) => {
       if (data.length === 0) {
         alert("Not in the database");
@@ -57,16 +58,15 @@ function fetchCoordinates(city) {
       const lon = data[0].lon;
       fetchWeather(lat, lon, data[0].name);
     })
-    .catch((error) => console.error("Invalid coordinates:", error));
+    .catch((error) => console.error("Error fetching coordinates:", error));
 }
 
 function fetchWeather(lat, lon, cityName) {
-  const apiKey = "e6dfe8b0f0462fe603d660cc1de7b7e0";
-  const requestUrl =
-    "https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${apiKey}";
+  const apiKey = "105e89504a7a6bcb10d19714d7d12063";
+  const requestUrl = `https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${apiKey}`;
 
   fetch(requestUrl)
-    .then((response) => response.JSON())
+    .then((response) => response.json())
     .then((data) => displayWeather(data, cityName))
     .catch((error) => console.error("Can't get weather data", error));
 }
