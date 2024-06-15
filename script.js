@@ -8,7 +8,7 @@ document
   .getElementById("search-button")
   .addEventListener("click", function (event) {
     event.preventDefault();
-    let city = document.getElementById("search-input").value;
+    const city = document.getElementById("search-input").value;
     if (city) {
       saveSearch(city);
       fetchCoordinates(city);
@@ -26,7 +26,7 @@ function saveSearch(city) {
 
 function displaySearchHistory() {
   const historyContainer = document.getElementById("history");
-  historyContainer.innerHTML = " ";
+  historyContainer.innerHTML = "";
   let searches = JSON.parse(localStorage.getItem("weatherSearches")) || [];
   searches.forEach((city) => {
     const searchItemEl = document.createElement("button");
@@ -63,24 +63,23 @@ function fetchCoordinates(city) {
 
 function fetchWeather(lat, lon, cityName) {
   const apiKey = "105e89504a7a6bcb10d19714d7d12063";
-  const requestUrl = `https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${apiKey}`;
+  const requestUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}`;
 
   fetch(requestUrl)
     .then((response) => response.json())
     .then((data) => displayWeather(data, cityName))
-    .catch((error) => console.error("Can't get weather data", error));
+    .catch((error) => console.error("Error fetching weather data:", error));
 }
 
 function displayWeather(data, cityName) {
   const todaySection = document.getElementById("today");
   const forecastSection = document.getElementById("forecast");
-  todaySection.innerHTML = " ";
-  forecastSection.innerHtml = " ";
+  todaySection.innerHTML = "";
+  forecastSection.innerHTML = "";
 
-  const currentWeather = data.list[0];
-  const iconUrl =
-    "https://openweathermap.org/img/wn/${currentWeather.weather[0].icon}.png";
-  const fahrenheit = (currentWeather.main.temp * 9) / 5 + 32;
+  const currentWeather = data;
+  const iconUrl = `https://openweathermap.org/img/wn/${currentWeather.weather[0].icon}.png`;
+  const fahrenheit = ((currentWeather.main.temp - 273.15) * 9) / 5 + 32;
   const todayDivEl = document.createElement("div");
   todayDivEl.classList.add("weather-day");
   todayDivEl.innerHTML = ` 
@@ -99,7 +98,7 @@ function displayWeather(data, cityName) {
   const forecast = data.list.slice(0, 5);
   forecast.forEach((day) => {
     const iconUrl = `https://openweathermap.org/img/wn/${day.weather[0].icon}.png`;
-    const fahrenheit = (day.main.temp * 9) / 5 + 32;
+    const fahrenheit = ((day.main.temp - 273.15) * 9) / 5 + 32;
     const dayDivEl = document.createElement("div");
     dayDivEl.classList.add("weather-day", "col");
     dayDivEl.innerHTML = `
