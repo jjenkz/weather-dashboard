@@ -95,6 +95,7 @@ function displayWeather(data, cityName) {
 
   todaySection.appendChild(todayDivEl);
 
+  console.log(data);
   const forecast = data.list.slice(0, 5);
   forecast.forEach((day) => {
     const iconUrl = `https://openweathermap.org/img/wn/${day.weather[0].icon}.png`;
