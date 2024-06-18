@@ -63,7 +63,7 @@ function fetchCoordinates(city) {
 
 function fetchWeather(lat, lon, cityName) {
   const apiKey = "105e89504a7a6bcb10d19714d7d12063";
-  const requestUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}`;
+  const requestUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}`;
 
   fetch(requestUrl)
     .then((response) => response.json())
@@ -77,7 +77,7 @@ function displayWeather(data, cityName) {
   todaySection.innerHTML = "";
   forecastSection.innerHTML = "";
 
-  const currentWeather = data;
+  const currentWeather = data.list[0];
   const iconUrl = `https://openweathermap.org/img/wn/${currentWeather.weather[0].icon}.png`;
   const fahrenheit = ((currentWeather.main.temp - 273.15) * 9) / 5 + 32;
   const todayDivEl = document.createElement("div");
@@ -95,7 +95,6 @@ function displayWeather(data, cityName) {
 
   todaySection.appendChild(todayDivEl);
 
-  console.log(data);
   const forecast = data.list.slice(0, 5);
   forecast.forEach((day) => {
     const iconUrl = `https://openweathermap.org/img/wn/${day.weather[0].icon}.png`;
@@ -110,7 +109,8 @@ function displayWeather(data, cityName) {
     <p>Temp: ${fahrenheit.toFixed(1)}  °F </p>
     <p>Weather: ${day.weather[0].description}</p>
     <p>Humidity: ${day.main.humidity}%</p>
-    <p>Humidity: ${day.main.humidity}%</p>`;
+    <p>Wind Speed: ${day.wind.speed} m/s</p>
+    `;
 
     forecastSection.appendChild(dayDivEl);
   });
